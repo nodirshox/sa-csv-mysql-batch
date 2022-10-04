@@ -15,11 +15,5 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void save() {
-        Student student = new Student();
-        student.setFirst("John");
-        student.setLast("Doe");
-        student.setGPA(4.0);
-        student.setDOB(LocalDateTime.now());
-        studentRepository.save(student);
     }
 }
