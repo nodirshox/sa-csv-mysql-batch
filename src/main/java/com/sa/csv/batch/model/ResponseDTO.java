@@ -1,4 +1,4 @@
-package com.sa.csv.batch.dto;
+package com.sa.csv.batch.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
