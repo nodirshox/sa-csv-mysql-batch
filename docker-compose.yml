@@ -16,7 +16,7 @@ services:
       - spring-mysql
 
   spring-boot:
-      image: spring-batch:latest
+      image: nodirshox/sa-csv-batch:latest
       restart: always
       container_name: spring-batch
       ports:
