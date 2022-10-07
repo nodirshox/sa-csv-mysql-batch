@@ -1,18 +1,19 @@
 package com.sa.csv.batch.service.impl;
 
-
+import com.sa.csv.batch.entity.User;
 import com.sa.csv.batch.model.LoginRequest;
 import com.sa.csv.batch.model.LoginResponse;
-import com.sa.csv.batch.model.RefreshTokenRequest;
+import com.sa.csv.batch.repository.UserRepo;
 import com.sa.csv.batch.security.JwtHelper;
 import com.sa.csv.batch.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,34 +21,26 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
     private final JwtHelper jwtHelper;
+    private final UserRepo userRepo;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
+        User user = userRepo.findByEmail(loginRequest.getEmail());
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Credentials");
+        }
         try {
             var result = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
                             loginRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            log.info("Bad Credentials");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Credentials");
         }
 
         final String accessToken = jwtHelper.generateToken(loginRequest.getEmail());
-        final String refreshToken = jwtHelper.generateRefreshToken(loginRequest.getEmail());
-        var loginResponse = new LoginResponse(accessToken, refreshToken);
+        var loginResponse = new LoginResponse(accessToken);
         return loginResponse;
-    }
-
-    @Override
-    public LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        boolean isRefreshTokenValid = jwtHelper.validateToken(refreshTokenRequest.getRefreshToken());
-        if (isRefreshTokenValid) {
-            final String accessToken = jwtHelper.generateToken(jwtHelper.getSubject(refreshTokenRequest.getRefreshToken()));
-            var loginResponse = new LoginResponse(accessToken, refreshTokenRequest.getRefreshToken());
-            return loginResponse;
-        }
-        return new LoginResponse();
     }
 }
