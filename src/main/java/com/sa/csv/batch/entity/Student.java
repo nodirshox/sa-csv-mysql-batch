@@ -1,5 +1,6 @@
 package com.sa.csv.batch.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,6 @@ public class Student {
     private String last;
     private double GPA;
     private LocalDate DOB;
+    @JsonIgnore
+    private LocalDateTime createAt;
 }

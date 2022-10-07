@@ -2,7 +2,6 @@ package com.sa.csv.batch.security;
 
 import com.sa.csv.batch.entity.User;
 import com.sa.csv.batch.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

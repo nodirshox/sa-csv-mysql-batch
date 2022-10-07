@@ -5,6 +5,7 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class StudentFieldSetMapper implements FieldSetMapper<Student> {
     @Override
@@ -14,6 +15,7 @@ public class StudentFieldSetMapper implements FieldSetMapper<Student> {
         student.setLast(fieldSet.readString("last"));
         student.setGPA(fieldSet.readDouble("GPA"));
         student.setDOB(getDate(fieldSet.readInt("DOB")));
+        student.setCreateAt(LocalDateTime.now());
         return student;
     }
     private LocalDate getDate(int year) {
