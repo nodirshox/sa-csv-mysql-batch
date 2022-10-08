@@ -17,7 +17,7 @@
    ```
    http://localhost:3000/api/auth/login
    ```
-   Body
+   Body (raw -> JSON)
    ```
     {
         "email": "admin@gmail.com",
@@ -25,12 +25,12 @@
     }
    ```
 
-3. Copy 'accessToken' from response and create new [POST] request in following URL. Go to Authorization tab and select 'Bearer Token' and paste token in input
+3. Copy 'accessToken' from response and create [POST] request in following URL. Go to Authorization tab and select 'Bearer Token' and paste token in input
    ```
    http://localhost:3000/api/cron-job/start
    ```
 
-4. Read all rows from MySQL. Create new [GET] request in following URL and add 'Bearer Token'
+4. Read all rows from MySQL. Create [GET] request in following URL and add token into 'Bearer Token'
    ```
    http://localhost:3000/api/cron-job/data
    ```
